@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Lưu đồ thuật toán ScreenTranslator</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; background: #f4f4f9; padding: 20px; }
+        .controls { margin-top: 20px; }
+        button { padding: 10px 20px; cursor: pointer; border: none; background: #0078d4; color: white; border-radius: 5px; }
+        button:hover { background: #005a9e; }
+        .mermaid { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+    <h1>Lưu đồ thuật toán ScreenTranslator</h1>
+    <div class="mermaid">
+        graph TD
+            A[Bắt đầu] --> B{Nhấn Alt+Q?}
+            B -- Có --> C[Hiển thị ScreenOverlay]
+            C --> D[Người dùng chọn vùng]
+            D --> E[Chụp ảnh vùng chọn]
+            
+            subgraph Core [Xử lý lõi]
+                E --> F[Tiền xử lý: Grayscale & Contrast]
+                F --> G[Nhận diện chữ (OCR): Tesseract eng+jpn]
+                G --> H[Làm sạch văn bản: clean_text & filter_text]
+            end
+
+            H --> I{Kiểm tra Cache?}
+            I -- Chưa có --> J{Sử dụng API?}
+            J -- Có --> K[Langbly API]
+            J -- Không --> L[Google Translator]
+            
+            K --> M[Lưu kết quả vào Cache]
+            L --> M
+            I -- Đã có --> N[Lấy từ Cache]
+            
+            M --> O[Hiển thị kết quả lên TooltipWindow]
+            N --> O
+            
+            O --> P[Kết thúc]
+    </div>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+</body>
+</html>
